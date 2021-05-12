@@ -24,10 +24,15 @@ app.get("/users", logMethod, (req, res, next) => {
   if (users.length === 0) {
     const err = new Error("no users");
     err.status = 500;
-    // pass it to next, we only pass values to `next` when we want to call the error handling middleware
     next(err);
   }
   res.json(users);
+});
+
+app.get("*", (req, res, next) => {
+    const err = new Error("NOT FOUND");
+    err.status = 404;
+    next(err);
 });
 
 authRouter.get("/users", (req, res, next) => {
@@ -51,6 +56,10 @@ authRouter.post("/users/create", logMethod, (req, res, next) => {
     res.json(users);
 });
 
+authRouterNew.use((req, res, next) => {
+    console.log("products router");
+});
+
 app.use((err, req, res, next) => {
   // set the status code
   res.status(err.status);
@@ -62,6 +71,7 @@ app.use((err, req, res, next) => {
     },
   });
 });
+
 
 app.use(authRouter);
 app.use(authRouterNew);
