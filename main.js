@@ -5,6 +5,7 @@ const port = 3000;
 const authRouter = express.Router();
 const authRouterNew = express.Router();
 const users = ["John", "Mark"];
+const products =["keyboard","mouse"];
 app.use(express.json());
 
 const logUsers = (req, res, next) => {
@@ -34,9 +35,15 @@ authRouter.get("/users", (req, res, next) => {
   next();
 });
 
-authRouterNew.get("/products", (req, res, next) => {
+authRouterNew.get("/products/update", (req, res, next) => {
     res.json(users);
     next();
+});
+
+authRouterNew.post("/products", (req, res, next) => {
+    const product = req.body.prod;
+    products.splice(0, 1, product);
+    res.json(products);
 });
 
 authRouter.post("/users/create", logMethod, (req, res, next) => {
