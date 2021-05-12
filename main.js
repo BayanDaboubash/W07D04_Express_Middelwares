@@ -28,7 +28,10 @@ app.get("/users", logMethod, (req, res, next) => {
     res.json(users);
 });
 
-
+app.get("/users", (req, res, next) => {
+    res.json(users);
+    next();
+});
 
 app.use((err, req, res, next) => {
   // set the status code
