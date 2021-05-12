@@ -7,10 +7,6 @@ const users = ["John", "Mark"];
 app.use(express.static("public"));
 app.use(express.json());
 
-app.get("/users", (req, res, next) => {
-  res.json(users);
-});
-
 const logUsers  = (req, res, next) => {
     console.log(users);
     next();
