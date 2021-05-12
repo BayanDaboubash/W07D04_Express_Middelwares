@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const authRouter = express.Router();
+const authRouterNew = express.Router();
 const users = ["John", "Mark"];
 app.use(express.json());
 
@@ -33,6 +34,11 @@ authRouter.get("/users", (req, res, next) => {
   next();
 });
 
+authRouterNew.get("/products", (req, res, next) => {
+    res.json(users);
+    next();
+});
+
 authRouter.post("/users/create", logMethod, (req, res, next) => {
     users.push(req.body.name);
     res.json(users);
@@ -51,6 +57,8 @@ app.use((err, req, res, next) => {
 });
 
 app.use(authRouter);
+app.use(authRouterNew);
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
