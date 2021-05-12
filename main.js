@@ -29,11 +29,6 @@ app.get("/users", logMethod, (req, res, next) => {
   res.json(users);
 });
 
-app.get("*", (req, res, next) => {
-    const err = new Error("NOT FOUND");
-    err.status = 404;
-    next(err);
-});
 
 authRouter.get("/users", (req, res, next) => {
   res.json(users);
