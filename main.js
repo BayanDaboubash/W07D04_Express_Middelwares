@@ -6,32 +6,37 @@ const authRouter = express.Router();
 const users = ["John", "Mark"];
 app.use(express.json());
 
-const logUsers  = (req, res, next) => {
-    console.log(users);
-    next();
+const logUsers = (req, res, next) => {
+  console.log(users);
+  next();
 };
 
 app.use(logUsers);
 
-const logMethod = (req, res, next)=>{
-    console.log(req.method);
-    next();
-}
+const logMethod = (req, res, next) => {
+  console.log(req.method);
+  next();
+};
 
 app.get("/users", logMethod, (req, res, next) => {
-    if(users.length ===0){
-        const err = new Error("no users");
-  err.status = 500;
-  // pass it to next, we only pass values to `next` when we want to call the error handling middleware
-  next(err);
-    }
-    res.json(users);
+  if (users.length === 0) {
+    const err = new Error("no users");
+    err.status = 500;
+    // pass it to next, we only pass values to `next` when we want to call the error handling middleware
+    next(err);
+  }
+  res.json(users);
 });
 
-authRouter.use("./users",(req, res, next) => {
+authRouter.get("/users", (req, res, next) => {
+  res.json(users);
+  next();
+});
+
+authRouter.post("/users/create", logMethod, (req, res, next) => {
+    users.push(req.body.name);
     res.json(users);
-    next();
-  });
+});
 
 app.use((err, req, res, next) => {
   // set the status code
@@ -45,6 +50,7 @@ app.use((err, req, res, next) => {
   });
 });
 
+app.use(authRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
